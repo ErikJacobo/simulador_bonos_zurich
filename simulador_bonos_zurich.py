@@ -308,10 +308,10 @@ if nombre_agente:
 
 
 if resultados and st.button("Calcular Bonos"):
-        st.markdown(f"### 🧾 Resultado para {nombre_agente}")
-        st.markdown("#### 📊 Datos Ingresados:")
-        for dato in datos_ingresados:
-        st.markdown(f"- {dato}")
+    st.markdown(f"### 🧾 Resultado para {nombre_agente}")
+    st.markdown("#### 📊 Datos Ingresados:")
+    for dato in datos_ingresados:
+    st.markdown(f"- {dato}")
 
         st.markdown("#### 💵 Resultados de Bono:")
         for nombre_bono, porcentaje, monto, comentario in resultados:
