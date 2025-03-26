@@ -19,7 +19,6 @@ if nombre_agente:
     total_bono = 0
     resultados = []
     datos_ingresados = []
-
     # --- PLAN IMPULZA ---
     if plan == "IMPULZA":
         if ramo == "Auto":
@@ -93,7 +92,6 @@ if nombre_agente:
             total_bono += monto
             datos_ingresados.append(f"Pólizas Daños: {pol} / Canal: {canal}")
             resultados.append(("Bono Daños", porcentaje, monto, comentario))
-
         elif ramo == "Vida + GMM":
             pol = st.number_input("Pólizas acumuladas (Vida + GMM)", min_value=0)
             if pol >= 11:
@@ -150,9 +148,8 @@ if nombre_agente:
             total_bono += monto
             datos_ingresados.append(f"Prima mensual (USD): {format_currency(prima)}")
             resultados.append(("Bono Universal Assistance", porcentaje, monto, comentario))
-
     # --- PLAN CIZ ---
-    if plan == "CIZ":
+    elif plan == "CIZ":
         if ramo == "Auto":
             prod_2024 = st.number_input("Producción 2024 (Autos)", min_value=0.0)
             prod_2025 = st.number_input("Producción 2025 (Autos)", min_value=0.0)
@@ -248,7 +245,6 @@ if nombre_agente:
             monto = prod_2025 * porcentaje
             total_bono += monto
             resultados.append(("Bono Daños CIZ", porcentaje, monto, comentario))
-
         elif ramo == "Vida":
             primas = st.number_input("Primas pagadas mensuales (Vida)", min_value=0.0)
             datos_ingresados.append(f"Primas Vida: {format_currency(primas)}")
@@ -305,8 +301,7 @@ if nombre_agente:
             monto = cartera * porcentaje
             total_bono += monto
             resultados.append(("Bono Conservación CIZ", porcentaje, monto, comentario))
-
-
+# Mostrar resultados solo si hay resultados y se presiona el botón
 if resultados and st.button("Calcular Bonos"):
     st.markdown(f"### 🧾 Resultado para {nombre_agente}")
     st.markdown("#### 📊 Datos Ingresados:")
@@ -327,7 +322,7 @@ if resultados and st.button("Calcular Bonos"):
     st.markdown("#### 🧮 Total del Bono:")
     st.markdown(f"<code>{format_currency(total_bono)}</code>", unsafe_allow_html=True)
 
-# ✅ Esto va fuera del bloque if, y sin sangría
+# ✅ Esto va fuera del bloque de resultados para que siempre se muestre
 st.markdown(
     "<p style='text-align: center; color: gray;'>Aplican restricciones y condiciones conforme al cuaderno oficial de Zurich Seguros 2025.</p>",
     unsafe_allow_html=True
