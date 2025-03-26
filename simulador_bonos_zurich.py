@@ -307,27 +307,27 @@ if nombre_agente:
             resultados.append(("Bono Conservación CIZ", porcentaje, monto, comentario))
 
 
- if resultados and st.button("Calcular Bonos"):
-    st.markdown(f"### 🧾 Resultado para {nombre_agente}")
-    st.markdown("#### 📊 Datos Ingresados:")
-    for dato in datos_ingresados:
-        st.markdown(f"- {dato}")
+     if resultados and st.button("Calcular Bonos"):
+        st.markdown(f"### 🧾 Resultado para {nombre_agente}")
+        st.markdown("#### 📊 Datos Ingresados:")
+        for dato in datos_ingresados:
+            st.markdown(f"- {dato}")
 
-    st.markdown("#### 💵 Resultados de Bono:")
-    for nombre_bono, porcentaje, monto, comentario in resultados:
-        st.markdown(f'''
-            <div style='margin-bottom: 10px;'>
-                <strong>{nombre_bono}:</strong><br>
-                Porcentaje aplicado: <code>{porcentaje*100:.2f}%</code><br>
-                Monto ganado: <code>{format_currency(monto)}</code><br>
-                Explicación: {comentario}
-            </div>
-        ''', unsafe_allow_html=True)
+        st.markdown("#### 💵 Resultados de Bono:")
+        for nombre_bono, porcentaje, monto, comentario in resultados:
+            st.markdown(f'''
+                <div style='margin-bottom: 10px;'>
+                    <strong>{nombre_bono}:</strong><br>
+                    Porcentaje aplicado: <code>{porcentaje*100:.2f}%</code><br>
+                    Monto ganado: <code>{format_currency(monto)}</code><br>
+                    Explicación: {comentario}
+                </div>
+            ''', unsafe_allow_html=True)
 
-    st.markdown("#### 🧮 Total del Bono:")
-    st.markdown(f"<code>{format_currency(total_bono)}</code>", unsafe_allow_html=True)
+        st.markdown("#### 🧮 Total del Bono:")
+        st.markdown(f"<code>{format_currency(total_bono)}</code>", unsafe_allow_html=True)
 
-# ✅ Esto va afuera del `if`, para que siempre se muestre
+# ✅ Esto debe estar sin indentación, afuera del "if"
 st.markdown(
     "<p style='text-align: center; color: gray;'>Aplican restricciones y condiciones conforme al cuaderno oficial de Zurich Seguros 2025.</p>",
     unsafe_allow_html=True
