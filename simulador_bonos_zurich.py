@@ -307,11 +307,11 @@ if nombre_agente:
             resultados.append(("Bono Conservación CIZ", porcentaje, monto, comentario))
 
 
-     if resultados and st.button("Calcular Bonos"):
+if resultados and st.button("Calcular Bonos"):
         st.markdown(f"### 🧾 Resultado para {nombre_agente}")
         st.markdown("#### 📊 Datos Ingresados:")
         for dato in datos_ingresados:
-            st.markdown(f"- {dato}")
+        st.markdown(f"- {dato}")
 
         st.markdown("#### 💵 Resultados de Bono:")
         for nombre_bono, porcentaje, monto, comentario in resultados:
@@ -330,5 +330,4 @@ if nombre_agente:
 # ✅ Esto debe estar sin indentación, afuera del "if"
 st.markdown(
     "<p style='text-align: center; color: gray;'>Aplican restricciones y condiciones conforme al cuaderno oficial de Zurich Seguros 2025.</p>",
-    unsafe_allow_html=True
-)
+    unsafe_allow_html=True)
