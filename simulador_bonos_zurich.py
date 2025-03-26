@@ -306,6 +306,7 @@ if nombre_agente:
             total_bono += monto
             resultados.append(("Bono Conservación CIZ", porcentaje, monto, comentario))
 
+
  if resultados and st.button("Calcular Bonos"):
     st.markdown(f"### 🧾 Resultado para {nombre_agente}")
     st.markdown("#### 📊 Datos Ingresados:")
