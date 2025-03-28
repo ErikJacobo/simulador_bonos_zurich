@@ -14,7 +14,7 @@ if nombre_agente:
     plan = st.selectbox("Selecciona el plan:", ["IMPULZA", "CIZ"])
     ramos_impulza = ["Auto", "Flotillas", "Daños", "Vida + GMM", "Accidentes Personales", "Universal Assistance"]
     ramos_ciz = ["Auto", "Flotillas", "Daños", "Vida", "GMM", "Conservación"]
-    ramo = st.selectbox("Selecciona el ramo:", ramos_impulza if plan == "IMPULZA" else ramos_ciz)
+    ramo = st.selectbox("Selecciona el ramo a simular:", ramos_impulza if plan == "IMPULZA" else ramos_ciz)
 
     total_bono = 0
     resultados = []
