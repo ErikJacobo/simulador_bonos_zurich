@@ -5,10 +5,7 @@ from PIL import Image
 def format_currency(value):
     return "$ {:,.2f}".format(value)
 
-# Configuración general de la página
 st.set_page_config(page_title="Simulador Bonos Zurich 2025", layout="centered")
-st.markdown("<h1 style='text-align: center;'>Simulador de Bonos</h1>", unsafe_allow_html=True)
-st.markdown("<h2 style='text-align: center;'>Zurich 2025</h2>", unsafe_allow_html=True)
 
 # Logo en la parte superior derecha
 col1, col2 = st.columns([5, 1])
@@ -16,18 +13,23 @@ with col2:
     logo = Image.open("link logo.jpg")
     st.image(logo, width=100)
 
-# Campo para el nombre del agente
-nombre_agente = st.text_input("Nombre del Agente")
+st.markdown("<h1 style='text-align: center;'>Simulador de Bonos</h1>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center;'>Zurich 2025</h2>", unsafe_allow_html=True)
+
+nombre_agente = st.text_input("Nombre del agente")
+
+plan = None
+ramo = None
+total_bono = 0
+resultados = []
+datos_ingresados = []
 
 if nombre_agente:
     plan = st.selectbox("Selecciona el plan:", ["IMPULZA", "CIZ"])
     ramos_impulza = ["Auto", "Flotillas", "Daños", "Vida + GMM", "Accidentes Personales", "Universal Assistance"]
     ramos_ciz = ["Auto", "Flotillas", "Daños", "Vida", "GMM", "Conservación"]
-    ramo = st.selectbox("Selecciona el ramo:", ramos_impulza if plan == "IMPULZA" else ramos_ciz)
+    ramo = st.selectbox("Selecciona el ramo a simular:", ramos_impulza if plan == "IMPULZA" else ramos_ciz)
 
-    total_bono = 0
-    resultados = []
-    datos_ingresados = []
 
 # --- PLAN IMPULZA ---
 if plan == "IMPULZA":
