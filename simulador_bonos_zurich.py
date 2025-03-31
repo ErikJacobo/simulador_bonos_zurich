@@ -219,6 +219,7 @@ if plan == "IMPULZA":
         total_bono += monto_rentabilidad
         resultados.append(("💠 Bono Rentabilidad Anual", porcentaje_rentabilidad, monto_rentabilidad, comentario_rentabilidad))
 
+       # --- CIZ: Flotillas ---
     if plan == "CIZ" and ramo == "Flotillas":
         prima_mensual = st.number_input("Prima pagada mensual (Flotillas CIZ)", min_value=0.0)
         prima_anual = st.number_input("Prima pagada anual acumulada (Flotillas CIZ)", min_value=0.0)
