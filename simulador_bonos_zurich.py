@@ -162,7 +162,8 @@ if plan == "IMPULZA":
         resultados.append(("🌐 Bono Universal Assistance", porcentaje, monto, comentario))
 
 # --- PLAN CIZ ---
- if plan == "CIZ" and ramo == "Auto":
+
+    if plan == "CIZ" and ramo == "Auto":
         prima_mensual = st.number_input("Prima pagada mensual (Auto CIZ)", min_value=0.0)
         prima_anual = st.number_input("Prima pagada anual acumulada (Auto CIZ)", min_value=0.0)
         siniestralidad = st.number_input("Siniestralidad acumulada (%)", min_value=0.0, max_value=100.0)
