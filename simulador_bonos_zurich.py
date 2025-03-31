@@ -375,92 +375,121 @@ if plan == "CIZ" and ramo == "Daños":
     total_bono += monto_rentabilidad
     resultados.append(("🏠 Bono Rentabilidad Anual Daños", porcentaje_rentabilidad, monto_rentabilidad, comentario_rentabilidad))
 
-      # --- CIZ: Vida + GMM ---
-    if plan == "CIZ" and ramo == "Vida + GMM":
-        primas_vida = st.number_input("Primas nuevas Vida (anual)", min_value=0.0)
-        primas_gmm = st.number_input("Primas nuevas GMM (anual)", min_value=0.0)
-        siniestralidad_vida = st.number_input("Siniestralidad Vida (%)", min_value=0.0, max_value=100.0)
-        siniestralidad_gmm = st.number_input("Siniestralidad GMM (%)", min_value=0.0, max_value=100.0)
-        conservacion_vida = st.number_input("% Conservación Vida", min_value=0.0, max_value=100.0)
-        conservacion_gmm = st.number_input("% Conservación GMM", min_value=0.0, max_value=100.0)
+       # --- CIZ: Vida ---
+    if plan == "CIZ" and ramo == "Vida":
+        primas = st.number_input("Primas nuevas Vida (anual)", min_value=0.0)
+        siniestralidad = st.number_input("Siniestralidad Vida (%)", min_value=0.0, max_value=100.0)
+        gano_mensual = st.checkbox("¿Se ganó el bono mensual acumulable al menos una vez?")
 
-        datos_ingresados.append(f"Primas nuevas Vida: {format_currency(primas_vida)}")
-        datos_ingresados.append(f"Primas nuevas GMM: {format_currency(primas_gmm)}")
-        datos_ingresados.append(f"Siniestralidad Vida: {siniestralidad_vida:.2f}%")
-        datos_ingresados.append(f"Siniestralidad GMM: {siniestralidad_gmm:.2f}%")
-        datos_ingresados.append(f"Conservación Vida: {conservacion_vida:.2f}%")
-        datos_ingresados.append(f"Conservación GMM: {conservacion_gmm:.2f}%")
+        datos_ingresados.append(f"Primas Vida: {format_currency(primas)}")
+        datos_ingresados.append(f"Siniestralidad Vida: {siniestralidad:.2f}%")
 
-        # --- Bono Mensual Vida
-        porcentaje_vida_mensual = 0
-        if primas_vida >= 50000 and primas_vida <= 499999:
-            porcentaje_vida_mensual = 0.03
-        elif primas_vida <= 2499999:
-            porcentaje_vida_mensual = 0.04
-        elif primas_vida <= 5999999:
-            porcentaje_vida_mensual = 0.05
-        elif primas_vida >= 6000000:
-            porcentaje_vida_mensual = 0.06
-        comentario_vida_mensual = f"✅ Aplica bono mensual acumulable del {porcentaje_vida_mensual*100:.1f}% por primas de {format_currency(primas_vida)}."
-        monto_vida_mensual = primas_vida * porcentaje_vida_mensual
-        total_bono += monto_vida_mensual
-        resultados.append(("❤️ Bono Mensual Vida", porcentaje_vida_mensual, monto_vida_mensual, comentario_vida_mensual))
+        porcentaje = 0
+        comentario = "❌ No aplica bono de rentabilidad."
 
-        # --- Bono Mensual GMM
-        porcentaje_gmm_mensual = 0
-        if primas_gmm >= 500000 and primas_gmm <= 2499999:
-            porcentaje_gmm_mensual = 0.01
-        elif primas_gmm <= 5999999:
-            porcentaje_gmm_mensual = 0.02
-        elif primas_gmm >= 6000000:
-            porcentaje_gmm_mensual = 0.03
-        comentario_gmm_mensual = f"✅ Aplica bono mensual acumulable del {porcentaje_gmm_mensual*100:.1f}% por primas de {format_currency(primas_gmm)}."
-        monto_gmm_mensual = primas_gmm * porcentaje_gmm_mensual
-        total_bono += monto_gmm_mensual
-        resultados.append(("🩺 Bono Mensual GMM", porcentaje_gmm_mensual, monto_gmm_mensual, comentario_gmm_mensual))
+        if gano_mensual:
+            if siniestralidad <= 60:
+                porcentaje = 0.02
+                comentario = "✅ Siniestralidad ≤ 60%. Aplica bono del 2%."
+            else:
+                comentario = "❌ Siniestralidad mayor al 60%. No aplica bono."
+        else:
+            comentario = "❌ No se ganó el bono mensual acumulable."
 
-        # --- Rentabilidad Vida
-        porcentaje_vida_renta = 0
-        if siniestralidad_vida <= 60:
-            porcentaje_vida_renta = 0.02
-        comentario_vida_renta = "✅ Aplica bono de rentabilidad del 2%." if porcentaje_vida_renta > 0 else "❌ No aplica bono de rentabilidad."
-        monto_vida_renta = primas_vida * porcentaje_vida_renta
-        total_bono += monto_vida_renta
-        resultados.append(("📘 Bono Rentabilidad Vida", porcentaje_vida_renta, monto_vida_renta, comentario_vida_renta))
+        monto = primas * porcentaje
+        total_bono += monto
+        resultados.append(("❤️ Bono Vida CIZ", porcentaje, monto, comentario))
 
-        # --- Rentabilidad GMM
-        porcentaje_gmm_renta = 0
-        if siniestralidad_gmm <= 65:
-            porcentaje_gmm_renta = 0.01
-        comentario_gmm_renta = "✅ Aplica bono de rentabilidad del 1%." if porcentaje_gmm_renta > 0 else "❌ No aplica bono de rentabilidad."
-        monto_gmm_renta = primas_gmm * porcentaje_gmm_renta
-        total_bono += monto_gmm_renta
-        resultados.append(("📗 Bono Rentabilidad GMM", porcentaje_gmm_renta, monto_gmm_renta, comentario_gmm_renta))
+    # --- CIZ: GMM ---
+    if plan == "CIZ" and ramo == "GMM":
+        primas = st.number_input("Primas nuevas GMM (anual)", min_value=0.0)
+        siniestralidad = st.number_input("Siniestralidad GMM (%)", min_value=0.0, max_value=100.0)
+        gano_mensual = st.checkbox("¿Se ganó el bono mensual acumulable al menos una vez? (GMM)")
 
-        # --- Conservación Vida
-        porcentaje_conservacion_vida = 0
-        if siniestralidad_vida <= 65:
-            if conservacion_vida >= 90:
-                porcentaje_conservacion_vida = 0.025
-            elif conservacion_vida >= 80:
-                porcentaje_conservacion_vida = 0.015
-        comentario_conservacion_vida = f"{'✅' if porcentaje_conservacion_vida else '❌'} Conservación Vida del {conservacion_vida:.2f}% → {porcentaje_conservacion_vida*100:.2f}%"
-        monto_conservacion_vida = primas_vida * porcentaje_conservacion_vida
-        total_bono += monto_conservacion_vida
-        resultados.append(("📘 Bono Conservación Vida", porcentaje_conservacion_vida, monto_conservacion_vida, comentario_conservacion_vida))
+        datos_ingresados.append(f"Primas GMM: {format_currency(primas)}")
+        datos_ingresados.append(f"Siniestralidad GMM: {siniestralidad:.2f}%")
 
-        # --- Conservación GMM
-        porcentaje_conservacion_gmm = 0
-        if siniestralidad_gmm <= 65:
-            if conservacion_gmm >= 90:
-                porcentaje_conservacion_gmm = 0.025
-            elif conservacion_gmm >= 80:
-                porcentaje_conservacion_gmm = 0.015
-        comentario_conservacion_gmm = f"{'✅' if porcentaje_conservacion_gmm else '❌'} Conservación GMM del {conservacion_gmm:.2f}% → {porcentaje_conservacion_gmm*100:.2f}%"
-        monto_conservacion_gmm = primas_gmm * porcentaje_conservacion_gmm
-        total_bono += monto_conservacion_gmm
-        resultados.append(("📗 Bono Conservación GMM", porcentaje_conservacion_gmm, monto_conservacion_gmm, comentario_conservacion_gmm))
+        porcentaje = 0
+        comentario = "❌ No aplica bono de rentabilidad."
 
+        if gano_mensual:
+            if siniestralidad <= 65:
+                porcentaje = 0.01
+                comentario = "✅ Siniestralidad ≤ 65%. Aplica bono del 1%."
+            else:
+                comentario = "❌ Siniestralidad mayor al 65%. No aplica bono."
+        else:
+            comentario = "❌ No se ganó el bono mensual acumulable."
+
+        monto = primas * porcentaje
+        total_bono += monto
+        resultados.append(("🩺 Bono GMM CIZ", porcentaje, monto, comentario))
+
+    # --- CIZ: Conservación ---
+    if plan == "CIZ" and ramo == "Conservación":
+        vida_conservacion = st.number_input("% Conservación Vida", min_value=0.0, max_value=100.0)
+        gmm_conservacion = st.number_input("% Conservación GMM", min_value=0.0, max_value=100.0)
+        sin_v = st.number_input("Siniestralidad Vida (%)", min_value=0.0, max_value=100.0)
+        sin_gmm = st.number_input("Siniestralidad GMM (%)", min_value=0.0, max_value=100.0)
+
+        datos_ingresados.append(f"Conservación Vida: {vida_conservacion:.2f}%")
+        datos_ingresados.append(f"Conservación GMM: {gmm_conservacion:.2f}%")
+        datos_ingresados.append(f"Siniestralidad Vida: {sin_v:.2f}%")
+        datos_ingresados.append(f"Siniestralidad GMM: {sin_gmm:.2f}%")
+
+        porcentaje_vida = 0
+        if sin_v <= 65:
+            if vida_conservacion >= 90:
+                porcentaje_vida = 0.025
+            elif vida_conservacion >= 80:
+                porcentaje_vida = 0.015
+
+        monto_vida = 100000 * porcentaje_vida  # Simulado
+        total_bono += monto_vida
+        comentario_vida = f"{'✅' if porcentaje_vida else '❌'} Conservación Vida de {vida_conservacion:.2f}% → bono del {porcentaje_vida*100:.2f}%."
+        resultados.append(("📘 Bono Conservación Vida", porcentaje_vida, monto_vida, comentario_vida))
+
+        porcentaje_gmm = 0
+        if sin_gmm <= 65:
+            if gmm_conservacion >= 90:
+                porcentaje_gmm = 0.025
+            elif gmm_conservacion >= 80:
+                porcentaje_gmm = 0.015
+
+        monto_gmm = 100000 * porcentaje_gmm  # Simulado
+        total_bono += monto_gmm
+        comentario_gmm = f"{'✅' if porcentaje_gmm else '❌'} Conservación GMM de {gmm_conservacion:.2f}% → bono del {porcentaje_gmm*100:.2f}%."
+        resultados.append(("📗 Bono Conservación GMM", porcentaje_gmm, monto_gmm, comentario_gmm))
+
+    if st.button("Calcular Bonos", key="calcular_bonos_zurich"):
+        st.markdown(f"### 🧾 Resultado para {nombre_agente}")
+
+        if datos_ingresados:
+            st.markdown("#### 📊 Datos Ingresados:")
+            for dato in datos_ingresados:
+                st.markdown(f"- {dato}")
+
+        if resultados:
+            st.markdown("#### 💵 Resultados de Bono:")
+            for nombre_bono, porcentaje, monto, comentario in resultados:
+                st.markdown(f'''
+                    <div style='margin-bottom: 10px;'>
+                        <strong>{nombre_bono}:</strong><br>
+                        Porcentaje aplicado: <code>{porcentaje*100:.2f}%</code><br>
+                        Monto ganado: <code>{format_currency(monto)}</code><br>
+                        Explicación: {comentario}
+                    </div>
+                ''', unsafe_allow_html=True)
+
+            st.markdown("#### 🧮 Total del Bono:")
+            st.markdown(f"<code>{format_currency(total_bono)}</code>", unsafe_allow_html=True)
+        else:
+            st.warning("No se generó ningún bono con los datos ingresados.")
+
+        st.markdown(
+            "<p style='text-align: center; color: gray;'>Aplican restricciones y condiciones conforme al cuaderno oficial de Zurich Seguros 2025.</p>",
+            unsafe_allow_html=True
+        )
 
 # --- Mostrar Resultados Finales ---
 if resultados and st.button("Calcular Bonos", key="calcular_bonos_zurich"):
