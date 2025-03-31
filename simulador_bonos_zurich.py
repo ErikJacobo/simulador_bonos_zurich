@@ -375,7 +375,7 @@ if plan == "CIZ" and ramo == "Daños":
     total_bono += monto_rentabilidad
     resultados.append(("🏠 Bono Rentabilidad Anual Daños", porcentaje_rentabilidad, monto_rentabilidad, comentario_rentabilidad))
 
-       # --- CIZ: Vida ---
+ # --- CIZ: Vida ---
     if plan == "CIZ" and ramo == "Vida":
         primas = st.number_input("Primas nuevas Vida (anual)", min_value=0.0)
         siniestralidad = st.number_input("Siniestralidad Vida (%)", min_value=0.0, max_value=100.0)
@@ -461,8 +461,9 @@ if plan == "CIZ" and ramo == "Daños":
         comentario_gmm = f"{'✅' if porcentaje_gmm else '❌'} Conservación GMM de {gmm_conservacion:.2f}% → bono del {porcentaje_gmm*100:.2f}%."
         resultados.append(("📗 Bono Conservación GMM", porcentaje_gmm, monto_gmm, comentario_gmm))
 
+    # --- Mostrar Resultados Finales ---
     if st.button("Calcular Bonos", key="calcular_bonos_zurich"):
-        st.markdown(f"### 🧾 Resultado para {nombre_agente}")
+        st.markdown(f"### 🧾 Resultado para {nombre_agente}:")
 
         if datos_ingresados:
             st.markdown("#### 📊 Datos Ingresados:")
@@ -491,23 +492,3 @@ if plan == "CIZ" and ramo == "Daños":
             unsafe_allow_html=True
         )
 
-# --- Mostrar Resultados Finales ---
-if resultados and st.button("Calcular Bonos", key="calcular_bonos_zurich"):
-    st.markdown(f"### 🧾 Resultado para {nombre_agente}:")
-    
-    st.markdown("#### 📊 Datos Ingresados:")
-    for dato in datos_ingresados:
-        st.markdown(f"- {dato}")
-
-    st.markdown("#### 💵 Resultados de Bono:")
-    for nombre_bono, porcentaje, monto, comentario in resultados:
-        st.markdown(f"**{nombre_bono}:** {format_currency(monto)}")
-        st.markdown(f"- {comentario}")
-
-    st.markdown("#### 🧮 Total del Bono:")
-    st.markdown(f"**{format_currency(total_bono)}**")
-
-    st.markdown(
-        "<p style='text-align: center; color: gray;'>Aplican restricciones y condiciones conforme al cuaderno oficial de Zurich Seguros 2025.</p>",
-        unsafe_allow_html=True
-    )
