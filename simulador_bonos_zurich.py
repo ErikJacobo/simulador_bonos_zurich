@@ -162,74 +162,120 @@ if plan == "IMPULZA":
         resultados.append(("🌐 Bono Universal Assistance", porcentaje, monto, comentario))
 
 # --- PLAN CIZ ---
-if plan == "CIZ":
-    if ramo == "Auto":
-        prod_2024 = st.number_input("Producción 2024 (Autos)", min_value=0.0)
-        prod_2025 = st.number_input("Producción 2025 (Autos)", min_value=0.0)
-        sin = st.number_input("Siniestralidad Autos (%)", min_value=0.0, max_value=100.0)
-        crecimiento = ((prod_2025 - prod_2024) / prod_2024) * 100 if prod_2024 > 0 else 0
+ if plan == "CIZ" and ramo == "Auto":
+        prima_mensual = st.number_input("Prima pagada mensual (Auto CIZ)", min_value=0.0)
+        prima_anual = st.number_input("Prima pagada anual acumulada (Auto CIZ)", min_value=0.0)
+        siniestralidad = st.number_input("Siniestralidad acumulada (%)", min_value=0.0, max_value=100.0)
 
-        datos_ingresados.extend([
-            f"Producción 2024: {format_currency(prod_2024)}",
-            f"Producción 2025: {format_currency(prod_2025)}",
-            f"Crecimiento Real: {crecimiento:.2f}%",
-            f"Siniestralidad: {sin:.2f}%"
-        ])
+        datos_ingresados.append(f"Prima mensual: {format_currency(prima_mensual)}")
+        datos_ingresados.append(f"Prima anual: {format_currency(prima_anual)}")
+        datos_ingresados.append(f"Siniestralidad: {siniestralidad:.2f}%")
 
-        if sin <= 65:
-            if prod_2025 >= 100_000:
-                porcentaje = 0.055
-                comentario = "✅ Producción ≥ $100,000 y siniestralidad ≤ 65%. Aplica bono del 5.5%."
-            elif prod_2025 >= 50_000:
-                porcentaje = 0.045
-                comentario = "✅ Producción entre $50,000 y $99,999. Aplica bono del 4.5%."
-            elif prod_2025 >= 20_000:
-                porcentaje = 0.035
-                comentario = "✅ Producción entre $20,000 y $49,999. Aplica bono del 3.5%."
-            else:
-                porcentaje = 0
-                comentario = "❌ Producción menor a $20,000. No aplica bono."
-        else:
-            porcentaje = 0
-            comentario = f"❌ Siniestralidad de {sin:.2f}% excede el límite del 65%."
+        # Bono mensual
+        porcentaje_mensual = 0
+        comentario_mensual = "❌ No aplica bono mensual."
+        if prima_mensual >= 100_000:
+            porcentaje_mensual = 0.055
+            comentario_mensual = "✅ Prima mensual ≥ $100,000. Aplica bono del 5.5%."
+        elif prima_mensual >= 50_000:
+            porcentaje_mensual = 0.045
+            comentario_mensual = "✅ Prima mensual entre $50,000 y $99,999. Aplica bono del 4.5%."
+        elif prima_mensual >= 20_000:
+            porcentaje_mensual = 0.035
+            comentario_mensual = "✅ Prima mensual entre $20,000 y $49,999. Aplica bono del 3.5%."
+        monto_mensual = prima_mensual * porcentaje_mensual
+        total_bono += monto_mensual
+        resultados.append(("💠 Bono Mensual", porcentaje_mensual, monto_mensual, comentario_mensual))
 
-        monto = prod_2025 * porcentaje
-        total_bono += monto
-        resultados.append(("🚗 Bono Auto CIZ", porcentaje, monto, comentario))
+        # Bono recuperación anual
+        porcentaje_recuperacion = 0
+        comentario_recuperacion = "❌ No aplica bono recuperación anual."
+        if prima_anual >= 1_200_000:
+            porcentaje_recuperacion = 0.055
+            comentario_recuperacion = "✅ Prima anual ≥ $1,200,000. Aplica bono del 5.5%."
+        elif prima_anual >= 600_000:
+            porcentaje_recuperacion = 0.045
+            comentario_recuperacion = "✅ Prima anual entre $600,000 y $1,199,999. Aplica bono del 4.5%."
+        elif prima_anual >= 240_000:
+            porcentaje_recuperacion = 0.035
+            comentario_recuperacion = "✅ Prima anual entre $240,000 y $599,999. Aplica bono del 3.5%."
+        monto_recuperacion = prima_anual * porcentaje_recuperacion
+        total_bono += monto_recuperacion
+        resultados.append(("💠 Bono Recuperación Anual", porcentaje_recuperacion, monto_recuperacion, comentario_recuperacion))
 
-    elif ramo == "Flotillas":
-        prod_2024 = st.number_input("Producción 2024 (Flotillas)", min_value=0.0)
-        prod_2025 = st.number_input("Producción 2025 (Flotillas)", min_value=0.0)
-        sin = st.number_input("Siniestralidad Flotillas (%)", min_value=0.0, max_value=100.0)
-        crecimiento = ((prod_2025 - prod_2024) / prod_2024) * 100 if prod_2024 > 0 else 0
+        # Bono rentabilidad
+        porcentaje_rentabilidad = 0
+        comentario_rentabilidad = "❌ No aplica bono rentabilidad."
+        if siniestralidad <= 40:
+            porcentaje_rentabilidad = 0.03
+            comentario_rentabilidad = "✅ Siniestralidad ≤ 40%. Aplica bono del 3%."
+        elif siniestralidad <= 50:
+            porcentaje_rentabilidad = 0.02
+            comentario_rentabilidad = "✅ Siniestralidad entre 40.1% y 50%. Aplica bono del 2%."
+        elif siniestralidad <= 60:
+            porcentaje_rentabilidad = 0.01
+            comentario_rentabilidad = "✅ Siniestralidad entre 50.1% y 60%. Aplica bono del 1%."
+        monto_rentabilidad = prima_anual * porcentaje_rentabilidad
+        total_bono += monto_rentabilidad
+        resultados.append(("💠 Bono Rentabilidad Anual", porcentaje_rentabilidad, monto_rentabilidad, comentario_rentabilidad))
 
-        datos_ingresados.extend([
-            f"Producción 2024: {format_currency(prod_2024)}",
-            f"Producción 2025: {format_currency(prod_2025)}",
-            f"Crecimiento Real: {crecimiento:.2f}%",
-            f"Siniestralidad: {sin:.2f}%"
-        ])
+    if plan == "CIZ" and ramo == "Flotillas":
+        prima_mensual = st.number_input("Prima pagada mensual (Flotillas CIZ)", min_value=0.0)
+        prima_anual = st.number_input("Prima pagada anual acumulada (Flotillas CIZ)", min_value=0.0)
+        siniestralidad = st.number_input("Siniestralidad acumulada (%)", min_value=0.0, max_value=100.0)
 
-        if sin <= 65:
-            if prod_2025 >= 100_000:
-                porcentaje = 0.045
-                comentario = "✅ Producción ≥ $100,000 y siniestralidad aceptable. Aplica bono del 4.5%."
-            elif prod_2025 >= 50_000:
-                porcentaje = 0.035
-                comentario = "✅ Producción entre $50,000 y $99,999. Aplica bono del 3.5%."
-            elif prod_2025 >= 20_000:
-                porcentaje = 0.025
-                comentario = "✅ Producción entre $20,000 y $49,999. Aplica bono del 2.5%."
-            else:
-                porcentaje = 0
-                comentario = "❌ Producción insuficiente. No aplica bono."
-        else:
-            porcentaje = 0
-            comentario = f"❌ Siniestralidad de {sin:.2f}% excede el límite permitido (65%)."
+        datos_ingresados.append(f"Prima mensual Flotillas: {format_currency(prima_mensual)}")
+        datos_ingresados.append(f"Prima anual Flotillas: {format_currency(prima_anual)}")
+        datos_ingresados.append(f"Siniestralidad: {siniestralidad:.2f}%")
 
-        monto = prod_2025 * porcentaje
-        total_bono += monto
-        resultados.append(("🚛 Bono Flotillas CIZ", porcentaje, monto, comentario))
+        # Bono mensual
+        porcentaje_mensual = 0
+        comentario_mensual = "❌ No aplica bono mensual."
+        if prima_mensual >= 150_000:
+            porcentaje_mensual = 0.045
+            comentario_mensual = "✅ Prima mensual ≥ $150,000. Aplica bono del 4.5%."
+        elif prima_mensual >= 100_000:
+            porcentaje_mensual = 0.035
+            comentario_mensual = "✅ Prima mensual entre $100,000 y $149,999. Aplica bono del 3.5%."
+        elif prima_mensual >= 30_000:
+            porcentaje_mensual = 0.025
+            comentario_mensual = "✅ Prima mensual entre $30,000 y $99,999. Aplica bono del 2.5%."
+        monto_mensual = prima_mensual * porcentaje_mensual
+        total_bono += monto_mensual
+        resultados.append(("🚌 Bono Mensual Flotillas", porcentaje_mensual, monto_mensual, comentario_mensual))
+
+        # Bono recuperación anual
+        porcentaje_recuperacion = 0
+        comentario_recuperacion = "❌ No aplica bono recuperación anual."
+        if prima_anual >= 1_800_000:
+            porcentaje_recuperacion = 0.045
+            comentario_recuperacion = "✅ Prima anual ≥ $1,800,000. Aplica bono del 4.5%."
+        elif prima_anual >= 1_200_000:
+            porcentaje_recuperacion = 0.035
+            comentario_recuperacion = "✅ Prima anual entre $1,200,000 y $1,799,999. Aplica bono del 3.5%."
+        elif prima_anual >= 360_000:
+            porcentaje_recuperacion = 0.025
+            comentario_recuperacion = "✅ Prima anual entre $360,000 y $1,199,999. Aplica bono del 2.5%."
+        monto_recuperacion = prima_anual * porcentaje_recuperacion
+        total_bono += monto_recuperacion
+        resultados.append(("🚌 Bono Recuperación Anual Flotillas", porcentaje_recuperacion, monto_recuperacion, comentario_recuperacion))
+
+        # Bono rentabilidad
+        porcentaje_rentabilidad = 0
+        comentario_rentabilidad = "❌ No aplica bono rentabilidad."
+        if siniestralidad <= 45:
+            porcentaje_rentabilidad = 0.04
+            comentario_rentabilidad = "✅ Siniestralidad ≤ 45%. Aplica bono del 4%."
+        elif siniestralidad <= 50:
+            porcentaje_rentabilidad = 0.025
+            comentario_rentabilidad = "✅ Siniestralidad entre 45.1% y 50%. Aplica bono del 2.5%."
+        elif siniestralidad <= 55:
+            porcentaje_rentabilidad = 0.015
+            comentario_rentabilidad = "✅ Siniestralidad entre 50.1% y 55%. Aplica bono del 1.5%."
+        monto_rentabilidad = prima_anual * porcentaje_rentabilidad
+        total_bono += monto_rentabilidad
+        resultados.append(("🚌 Bono Rentabilidad Anual Flotillas", porcentaje_rentabilidad, monto_rentabilidad, comentario_rentabilidad))
+
 
     elif ramo == "Daños":
         prod_2024 = st.number_input("Producción 2024 (Daños)", min_value=0.0)
