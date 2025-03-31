@@ -476,34 +476,23 @@ if plan == "CIZ" and ramo == "Daños":
         total_bono += monto_conservacion
         resultados.append(("💎 Bono Anual de Conservación", porcentaje_bono, monto_conservacion, comentario_conservacion))
 
-    # --- Resultados Finales ---
-    if resultados:
-        if st.button("Calcular Bonos", key=f"calcular_bonos_zurich_{plan}_{ramo}"):
-            st.markdown(f"""
-                <h3>🧾 Resultado para {nombre_agente}:</h3>
-                <h4>📊 Datos Ingresados:</h4>
-                <ul>
-            """, unsafe_allow_html=True)
+# --- Mostrar Resultados Finales ---
+if resultados and st.button("Calcular Bonos", key="calcular_bonos_zurich"):
+    st.markdown(f"### 🧾 Resultado para {nombre_agente}:")
+    
+    st.markdown("#### 📊 Datos Ingresados:")
+    for dato in datos_ingresados:
+        st.markdown(f"- {dato}")
 
-            for dato in datos_ingresados:
-                st.markdown(f"<li>{dato}</li>", unsafe_allow_html=True)
+    st.markdown("#### 💵 Resultados de Bono:")
+    for nombre_bono, porcentaje, monto, comentario in resultados:
+        st.markdown(f"**{nombre_bono}:** {format_currency(monto)}")
+        st.markdown(f"- {comentario}")
 
-            st.markdown("</ul>", unsafe_allow_html=True)
-            st.markdown("<h4>💵 Resultados de Bono:</h4>", unsafe_allow_html=True)
-
-            for nombre_bono, porcentaje, monto, comentario in resultados:
-                st.markdown(f'''
-                    <div style='margin-bottom: 10px;'>
-                        <strong>{nombre_bono}:</strong> {format_currency(monto)}<br>
-                        <span style='color: gray;'>Bono de {nombre_bono}: {porcentaje*100:.2f}% → {format_currency(monto)}</span> ✅ {comentario}
-                    </div>
-                ''', unsafe_allow_html=True)
-
-            st.markdown("<h4>🧮 Total del Bono:</h4>", unsafe_allow_html=True)
-            st.markdown(f"<strong style='font-size: 24px;'>{format_currency(total_bono)}</strong>", unsafe_allow_html=True)
+    st.markdown("#### 🧮 Total del Bono:")
+    st.markdown(f"**{format_currency(total_bono)}**")
 
     st.markdown(
         "<p style='text-align: center; color: gray;'>Aplican restricciones y condiciones conforme al cuaderno oficial de Zurich Seguros 2025.</p>",
         unsafe_allow_html=True
     )
-
