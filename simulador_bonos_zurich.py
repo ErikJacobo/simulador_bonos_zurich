@@ -163,62 +163,63 @@ if plan == "IMPULZA":
 
 # --- PLAN CIZ ---
 
-    if plan == "CIZ" and ramo == "Auto":
-        prima_mensual = st.number_input("Prima pagada mensual (Auto CIZ)", min_value=0.0)
-        prima_anual = st.number_input("Prima pagada anual acumulada (Auto CIZ)", min_value=0.0)
-        siniestralidad = st.number_input("Siniestralidad acumulada (%)", min_value=0.0, max_value=100.0)
+  # --- CIZ: Auto ---
+if plan == "CIZ" and ramo == "Auto":
+    prima_mensual = st.number_input("Prima pagada mensual (Auto CIZ)", min_value=0.0)
+    prima_anual = st.number_input("Prima pagada anual acumulada (Auto CIZ)", min_value=0.0)
+    siniestralidad = st.number_input("Siniestralidad acumulada (%)", min_value=0.0, max_value=100.0)
 
-        datos_ingresados.append(f"Prima mensual: {format_currency(prima_mensual)}")
-        datos_ingresados.append(f"Prima anual: {format_currency(prima_anual)}")
-        datos_ingresados.append(f"Siniestralidad: {siniestralidad:.2f}%")
+    datos_ingresados.append(f"Prima mensual: {format_currency(prima_mensual)}")
+    datos_ingresados.append(f"Prima anual: {format_currency(prima_anual)}")
+    datos_ingresados.append(f"Siniestralidad: {siniestralidad:.2f}%")
 
-        # Bono mensual
-        porcentaje_mensual = 0
-        comentario_mensual = "❌ No aplica bono mensual."
-        if prima_mensual >= 100_000:
-            porcentaje_mensual = 0.055
-            comentario_mensual = "✅ Prima mensual ≥ $100,000. Aplica bono del 5.5%."
-        elif prima_mensual >= 50_000:
-            porcentaje_mensual = 0.045
-            comentario_mensual = "✅ Prima mensual entre $50,000 y $99,999. Aplica bono del 4.5%."
-        elif prima_mensual >= 20_000:
-            porcentaje_mensual = 0.035
-            comentario_mensual = "✅ Prima mensual entre $20,000 y $49,999. Aplica bono del 3.5%."
-        monto_mensual = prima_mensual * porcentaje_mensual
-        total_bono += monto_mensual
-        resultados.append(("💠 Bono Mensual", porcentaje_mensual, monto_mensual, comentario_mensual))
+    # Bono mensual
+    porcentaje_mensual = 0
+    comentario_mensual = "❌ No aplica bono mensual."
+    if prima_mensual >= 100_000:
+        porcentaje_mensual = 0.055
+        comentario_mensual = "✅ Prima mensual ≥ $100,000. Aplica bono del 5.5%."
+    elif prima_mensual >= 50_000:
+        porcentaje_mensual = 0.045
+        comentario_mensual = "✅ Prima mensual entre $50,000 y $99,999. Aplica bono del 4.5%."
+    elif prima_mensual >= 20_000:
+        porcentaje_mensual = 0.035
+        comentario_mensual = "✅ Prima mensual entre $20,000 y $49,999. Aplica bono del 3.5%."
+    monto_mensual = prima_mensual * porcentaje_mensual
+    total_bono += monto_mensual
+    resultados.append(("💠 Bono Mensual", porcentaje_mensual, monto_mensual, comentario_mensual))
 
-        # Bono recuperación anual
-        porcentaje_recuperacion = 0
-        comentario_recuperacion = "❌ No aplica bono recuperación anual."
-        if prima_anual >= 1_200_000:
-            porcentaje_recuperacion = 0.055
-            comentario_recuperacion = "✅ Prima anual ≥ $1,200,000. Aplica bono del 5.5%."
-        elif prima_anual >= 600_000:
-            porcentaje_recuperacion = 0.045
-            comentario_recuperacion = "✅ Prima anual entre $600,000 y $1,199,999. Aplica bono del 4.5%."
-        elif prima_anual >= 240_000:
-            porcentaje_recuperacion = 0.035
-            comentario_recuperacion = "✅ Prima anual entre $240,000 y $599,999. Aplica bono del 3.5%."
-        monto_recuperacion = prima_anual * porcentaje_recuperacion
-        total_bono += monto_recuperacion
-        resultados.append(("💠 Bono Recuperación Anual", porcentaje_recuperacion, monto_recuperacion, comentario_recuperacion))
+    # Bono recuperación anual
+    porcentaje_recuperacion = 0
+    comentario_recuperacion = "❌ No aplica bono recuperación anual."
+    if prima_anual >= 1_200_000:
+        porcentaje_recuperacion = 0.055
+        comentario_recuperacion = "✅ Prima anual ≥ $1,200,000. Aplica bono del 5.5%."
+    elif prima_anual >= 600_000:
+        porcentaje_recuperacion = 0.045
+        comentario_recuperacion = "✅ Prima anual entre $600,000 y $1,199,999. Aplica bono del 4.5%."
+    elif prima_anual >= 240_000:
+        porcentaje_recuperacion = 0.035
+        comentario_recuperacion = "✅ Prima anual entre $240,000 y $599,999. Aplica bono del 3.5%."
+    monto_recuperacion = prima_anual * porcentaje_recuperacion
+    total_bono += monto_recuperacion
+    resultados.append(("💠 Bono Recuperación Anual", porcentaje_recuperacion, monto_recuperacion, comentario_recuperacion))
 
-        # Bono rentabilidad
-        porcentaje_rentabilidad = 0
-        comentario_rentabilidad = "❌ No aplica bono rentabilidad."
-        if siniestralidad <= 40:
-            porcentaje_rentabilidad = 0.03
-            comentario_rentabilidad = "✅ Siniestralidad ≤ 40%. Aplica bono del 3%."
-        elif siniestralidad <= 50:
-            porcentaje_rentabilidad = 0.02
-            comentario_rentabilidad = "✅ Siniestralidad entre 40.1% y 50%. Aplica bono del 2%."
-        elif siniestralidad <= 60:
-            porcentaje_rentabilidad = 0.01
-            comentario_rentabilidad = "✅ Siniestralidad entre 50.1% y 60%. Aplica bono del 1%."
-        monto_rentabilidad = prima_anual * porcentaje_rentabilidad
-        total_bono += monto_rentabilidad
-        resultados.append(("💠 Bono Rentabilidad Anual", porcentaje_rentabilidad, monto_rentabilidad, comentario_rentabilidad))
+    # Bono rentabilidad
+    porcentaje_rentabilidad = 0
+    comentario_rentabilidad = "❌ No aplica bono rentabilidad."
+    if siniestralidad <= 40:
+        porcentaje_rentabilidad = 0.03
+        comentario_rentabilidad = "✅ Siniestralidad ≤ 40%. Aplica bono del 3%."
+    elif siniestralidad <= 50:
+        porcentaje_rentabilidad = 0.02
+        comentario_rentabilidad = "✅ Siniestralidad entre 40.1% y 50%. Aplica bono del 2%."
+    elif siniestralidad <= 60:
+        porcentaje_rentabilidad = 0.01
+        comentario_rentabilidad = "✅ Siniestralidad entre 50.1% y 60%. Aplica bono del 1%."
+    monto_rentabilidad = prima_anual * porcentaje_rentabilidad
+    total_bono += monto_rentabilidad
+    resultados.append(("💠 Bono Rentabilidad Anual", porcentaje_rentabilidad, monto_rentabilidad, comentario_rentabilidad))
 
        # --- CIZ: Flotillas ---
     if plan == "CIZ" and ramo == "Flotillas":
