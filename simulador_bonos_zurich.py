@@ -187,38 +187,6 @@ if nombre_agente:
         else:
             st.warning("No hay resultados para mostrar. Verifica los datos ingresados.")
 
-# --- Simulador Zurich 2025 ---
-import streamlit as st
-from PIL import Image
-
-def format_currency(value):
-    return "$ {:,.2f}".format(value)
-
-st.set_page_config(page_title="Simulador Bonos Zurich 2025", layout="centered")
-
-# Logo en la parte superior derecha
-col1, col2 = st.columns([5, 1])
-with col2:
-    logo = Image.open("link logo.jpg")
-    st.image(logo, width=100)
-
-st.markdown("<h1 style='text-align: center;'>Simulador de Bonos</h1>", unsafe_allow_html=True)
-st.markdown("<h2 style='text-align: center;'>Zurich 2025</h2>", unsafe_allow_html=True)
-
-nombre_agente = st.text_input("Nombre del agente")
-
-plan = None
-ramo = None
-total_bono = 0
-resultados = []
-datos_ingresados = []
-
-if nombre_agente:
-    plan = st.selectbox("Selecciona el plan:", ["IMPULZA", "CIZ"])
-    ramos_impulza = ["Auto", "Flotillas", "Daños", "Vida + GMM", "Accidentes Personales", "Universal Assistance"]
-    ramos_ciz = ["Auto", "Flotillas", "Daños", "Vida", "GMM", "Conservación"]
-    ramo = st.selectbox("Selecciona el ramo a simular:", ramos_impulza if plan == "IMPULZA" else ramos_ciz)
-
     # --- PLAN CIZ ---
     if plan == "CIZ":
         if ramo == "Auto":
