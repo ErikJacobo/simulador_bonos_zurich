@@ -20,9 +20,9 @@ nombre_agente = st.text_input("Nombre del agente")
 
 plan = None
 ramo = None
-total_bono = 0
 resultados = []
 datos_ingresados = []
+total_bono = 0
 
 if nombre_agente:
     plan = st.selectbox("Selecciona el plan:", ["IMPULZA", "CIZ"])
@@ -30,7 +30,6 @@ if nombre_agente:
     ramos_ciz = ["Auto", "Flotillas", "Daños", "Vida", "GMM", "Conservación"]
     ramo = st.selectbox("Selecciona el ramo a simular:", ramos_impulza if plan == "IMPULZA" else ramos_ciz)
 
-    # Aquí irán los cálculos para IMPULZA y CIZ
 # --- PLAN IMPULZA ---
     if plan == "IMPULZA":
         if ramo == "Auto":
@@ -368,15 +367,11 @@ if nombre_agente:
         st.markdown("#### 🧮 Total del Bono:")
         st.markdown(f"<code>{format_currency(total_bono)}</code>", unsafe_allow_html=True)
 
-    st.markdown(
-        "<p style='text-align: center; color: gray;'>Aplican restricciones y condiciones conforme al cuaderno oficial de Zurich Seguros 2025.</p>",
-        unsafe_allow_html=True
-    )
-
 
 # Siempre mostrar la leyenda al final
 st.markdown(
     "<p style='text-align: center; color: gray;'>Aplican restricciones y condiciones conforme al cuaderno oficial de Zurich Seguros 2025.</p>",
     unsafe_allow_html=True
 )
+
 
