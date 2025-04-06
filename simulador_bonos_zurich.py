@@ -264,15 +264,15 @@ if nombre_agente:
         comentario_gmm = f"{'✅' if porcentaje_gmm else '❌'} Conservación GMM de {gmm_conservacion:.2f}% → bono del {porcentaje_gmm*100:.2f}%."
         resultados.append(("📗 Bono Conservación GMM", porcentaje_gmm, monto_gmm, comentario_gmm))
 
-  if resultados and st.button("Calcular Bonos", key="calcular_bonos_zurich"):
-        st.markdown(f"### 🧾 Resultado para {nombre_agente}")
+   # --- Mostrar Resultados Finales ---
+    if resultados:
+        if st.button("Calcular Bonos", key="calcular_bonos_zurich"):
+            st.markdown(f"### 🧾 Resultado para {nombre_agente}:")
 
-        if datos_ingresados:
             st.markdown("#### 📊 Datos Ingresados:")
             for dato in datos_ingresados:
                 st.markdown(f"- {dato}")
 
-        if resultados:
             st.markdown("#### 💵 Resultados de Bono:")
             for nombre_bono, porcentaje, monto, comentario in resultados:
                 st.markdown(f"- **{nombre_bono}:** {format_currency(monto)}")
@@ -281,11 +281,8 @@ if nombre_agente:
 
             st.markdown("#### 🧮 Total del Bono:")
             st.markdown(f"**{format_currency(total_bono)}**")
-        else:
-            st.warning("No se generó ningún bono con los datos ingresados.")
 
-        st.markdown(
-            "<p style='text-align: center; color: gray;'>Aplican restricciones y condiciones conforme al cuaderno oficial de Zurich Seguros 2025.</p>",
-            unsafe_allow_html=True
-        )
-
+            st.markdown(
+                "<p style='text-align: center; color: gray;'>Aplican restricciones y condiciones conforme al cuaderno oficial de Zurich Seguros 2025.</p>",
+                unsafe_allow_html=True
+            )
