@@ -25,185 +25,214 @@ if nombre_agente:
     datos_ingresados = []
     total_bono = 0
 
-    # --- AUTO ---
+  # --- AUTO ---
     if ramo == "Auto":
-        mensual = st.number_input("Prima Pagada Mensual (m.n.)", min_value=0.0)
-        anual = st.number_input("Prima Pagada Anual (m.n.)", min_value=0.0)
-        siniestralidad = st.number_input("% Siniestralidad Acumulada", min_value=0.0, max_value=100.0)
+        prima_mensual = st.number_input("Prima mensual pagada (Auto)", min_value=0.0)
+        prima_anual = st.number_input("Prima anual pagada (Auto)", min_value=0.0)
+        siniestralidad = st.number_input("Siniestralidad acumulada (%)", min_value=0.0, max_value=100.0)
 
         datos_ingresados += [
-            f"Prima Mensual: {format_currency(mensual)}",
-            f"Prima Anual: {format_currency(anual)}",
+            f"Prima mensual: {format_currency(prima_mensual)}",
+            f"Prima anual: {format_currency(prima_anual)}",
             f"Siniestralidad: {siniestralidad:.2f}%"
         ]
 
-        porcentaje = 0
-        if mensual >= 100000:
-            porcentaje = 0.055
-        elif mensual >= 50000:
-            porcentaje = 0.045
-        elif mensual >= 20000:
-            porcentaje = 0.035
-        monto = mensual * porcentaje
-        total_bono += monto
-        resultados.append(("🚗 Bono Mensual Auto", porcentaje, monto, f"Bono mensual según prima: {format_currency(mensual)}"))
+        # Bono mensual
+        porcentaje_mensual = 0
+        if prima_mensual >= 100000:
+            porcentaje_mensual = 0.055
+        elif prima_mensual >= 50000:
+            porcentaje_mensual = 0.045
+        elif prima_mensual >= 20000:
+            porcentaje_mensual = 0.035
 
-        porcentaje = 0
-        if anual >= 1200000:
-            porcentaje = 0.055
-        elif anual >= 600000:
-            porcentaje = 0.045
-        elif anual >= 240000:
-            porcentaje = 0.035
-        monto = anual * porcentaje
-        total_bono += monto
-        resultados.append(("📅 Bono Recuperación Anual Auto", porcentaje, monto, f"Bono recuperación según prima anual: {format_currency(anual)}"))
+        monto_mensual = prima_mensual * porcentaje_mensual
+        total_bono += monto_mensual
+        comentario_mensual = f"{'✅' if porcentaje_mensual else '❌'} Bono mensual según prima: {format_currency(prima_mensual)}."
+        resultados.append(("🚗 Bono Mensual Auto", porcentaje_mensual, monto_mensual, comentario_mensual))
 
-        porcentaje = 0
+        # Bono recuperación
+        porcentaje_rec = 0
+        if prima_anual >= 1200000:
+            porcentaje_rec = 0.055
+        elif prima_anual >= 600000:
+            porcentaje_rec = 0.045
+        elif prima_anual >= 240000:
+            porcentaje_rec = 0.035
+
+        monto_rec = prima_anual * porcentaje_rec
+        total_bono += monto_rec
+        comentario_rec = f"{'✅' if porcentaje_rec else '❌'} Bono recuperación según prima anual: {format_currency(prima_anual)}."
+        resultados.append(("📅 Bono Recuperación Anual Auto", porcentaje_rec, monto_rec, comentario_rec))
+
+        # Bono rentabilidad
+        porcentaje_rent = 0
         if siniestralidad <= 40:
-            porcentaje = 0.03
+            porcentaje_rent = 0.03
         elif siniestralidad <= 50:
-            porcentaje = 0.02
+            porcentaje_rent = 0.02
         elif siniestralidad <= 60:
-            porcentaje = 0.01
-        monto = anual * porcentaje
-        total_bono += monto
-        resultados.append(("📈 Bono Rentabilidad Auto", porcentaje, monto, f"Rentabilidad del {siniestralidad:.2f}%"))
+            porcentaje_rent = 0.01
 
-    # --- FLOTILLAS ---
-    elif ramo == "Flotillas":
-        mensual = st.number_input("Prima Pagada Mensual Flotillas (m.n.)", min_value=0.0)
-        anual = st.number_input("Prima Pagada Anual Flotillas (m.n.)", min_value=0.0)
-        siniestralidad = st.number_input("% Siniestralidad Acumulada Flotillas", min_value=0.0, max_value=100.0)
+        monto_rent = prima_anual * porcentaje_rent
+        total_bono += monto_rent
+        comentario_rent = f"{'✅' if porcentaje_rent else '❌'} Rentabilidad del {siniestralidad:.2f}%."
+        resultados.append(("🧾 Bono Rentabilidad Auto", porcentaje_rent, monto_rent, comentario_rent))
+
+
+   # --- FLOTILLAS ---
+    if ramo == "Flotillas":
+        prima_mensual = st.number_input("Prima mensual pagada (Flotillas)", min_value=0.0)
+        prima_anual = st.number_input("Prima anual pagada (Flotillas)", min_value=0.0)
+        siniestralidad = st.number_input("Siniestralidad acumulada (%)", min_value=0.0, max_value=100.0)
 
         datos_ingresados += [
-            f"Prima Mensual Flotillas: {format_currency(mensual)}",
-            f"Prima Anual Flotillas: {format_currency(anual)}",
-            f"Siniestralidad Flotillas: {siniestralidad:.2f}%"
+            f"Prima mensual: {format_currency(prima_mensual)}",
+            f"Prima anual: {format_currency(prima_anual)}",
+            f"Siniestralidad: {siniestralidad:.2f}%"
         ]
 
-        porcentaje = 0
-        if mensual >= 150000:
-            porcentaje = 0.045
-        elif mensual >= 100000:
-            porcentaje = 0.035
-        elif mensual >= 30000:
-            porcentaje = 0.025
-        monto = mensual * porcentaje
-        total_bono += monto
-        resultados.append(("🚐 Bono Mensual Flotillas", porcentaje, monto, f"Bono mensual según prima flotillas: {format_currency(mensual)}"))
+        # Bono mensual
+        porcentaje_mensual = 0
+        if prima_mensual >= 150000:
+            porcentaje_mensual = 0.045
+        elif prima_mensual >= 100000:
+            porcentaje_mensual = 0.035
+        elif prima_mensual >= 30000:
+            porcentaje_mensual = 0.025
 
-        porcentaje = 0
-        if anual >= 1800000:
-            porcentaje = 0.045
-        elif anual >= 1200000:
-            porcentaje = 0.035
-        elif anual >= 360000:
-            porcentaje = 0.025
-        monto = anual * porcentaje
-        total_bono += monto
-        resultados.append(("📅 Bono Recuperación Anual Flotillas", porcentaje, monto, f"Bono recuperación según prima anual: {format_currency(anual)}"))
+        monto_mensual = prima_mensual * porcentaje_mensual
+        total_bono += monto_mensual
+        comentario_mensual = f"{'✅' if porcentaje_mensual else '❌'} Bono mensual según prima: {format_currency(prima_mensual)}."
+        resultados.append(("🚛 Bono Mensual Flotillas", porcentaje_mensual, monto_mensual, comentario_mensual))
 
-        porcentaje = 0
+        # Bono recuperación
+        porcentaje_rec = 0
+        if prima_anual >= 1800000:
+            porcentaje_rec = 0.045
+        elif prima_anual >= 1200000:
+            porcentaje_rec = 0.035
+        elif prima_anual >= 360000:
+            porcentaje_rec = 0.025
+
+        monto_rec = prima_anual * porcentaje_rec
+        total_bono += monto_rec
+        comentario_rec = f"{'✅' if porcentaje_rec else '❌'} Bono recuperación según prima anual: {format_currency(prima_anual)}."
+        resultados.append(("📆 Bono Recuperación Anual Flotillas", porcentaje_rec, monto_rec, comentario_rec))
+
+        # Bono rentabilidad
+        porcentaje_rent = 0
         if siniestralidad <= 45:
-            porcentaje = 0.04
+            porcentaje_rent = 0.04
         elif siniestralidad <= 50:
-            porcentaje = 0.025
+            porcentaje_rent = 0.025
         elif siniestralidad <= 55:
-            porcentaje = 0.015
-        monto = anual * porcentaje
-        total_bono += monto
-        resultados.append(("📈 Bono Rentabilidad Flotillas", porcentaje, monto, f"Rentabilidad del {siniestralidad:.2f}%"))
+            porcentaje_rent = 0.015
 
-    # --- DAÑOS ---
-    elif ramo == "Daños":
-        canal = st.radio("Canal de contratación", ["Portal", "Mesa de trámites"])
-        mensual = st.number_input("Prima Pagada Mensual Daños", min_value=0.0)
-        anual = st.number_input("Prima Pagada Anual Daños", min_value=0.0)
-        siniestralidad = st.number_input("% Siniestralidad Acumulada Daños", min_value=0.0, max_value=100.0)
+        monto_rent = prima_anual * porcentaje_rent
+        total_bono += monto_rent
+        comentario_rent = f"{'✅' if porcentaje_rent else '❌'} Rentabilidad del {siniestralidad:.2f}%."
+        resultados.append(("📊 Bono Rentabilidad Flotillas", porcentaje_rent, monto_rent, comentario_rent))
+
+
+  # --- DAÑOS ---
+    if ramo == "Daños":
+        portal = st.radio("¿Por qué medio se realizó la emisión?", ["Portal", "Mesa de trámites"])
+        prima_mensual = st.number_input("Prima mensual pagada (Daños)", min_value=0.0)
+        prima_anual = st.number_input("Prima anual pagada (Daños)", min_value=0.0)
+        siniestralidad = st.number_input("Siniestralidad acumulada (%)", min_value=0.0, max_value=100.0)
 
         datos_ingresados += [
-            f"Canal: {canal}",
-            f"Prima Mensual Daños: {format_currency(mensual)}",
-            f"Prima Anual Daños: {format_currency(anual)}",
-            f"Siniestralidad Daños: {siniestralidad:.2f}%"
+            f"Medio de emisión: {portal}",
+            f"Prima mensual: {format_currency(prima_mensual)}",
+            f"Prima anual: {format_currency(prima_anual)}",
+            f"Siniestralidad: {siniestralidad:.2f}%"
+        ]
+
+        porcentaje_mensual = 0
+        if portal == "Portal":
+            if prima_mensual >= 80000:
+                porcentaje_mensual = 0.07
+            elif prima_mensual >= 40000:
+                porcentaje_mensual = 0.06
+            elif prima_mensual >= 15000:
+                porcentaje_mensual = 0.05
+        else:
+            if siniestralidad <= 40:
+                if prima_mensual >= 200000:
+                    porcentaje_mensual = 0.07
+                elif prima_mensual >= 100000:
+                    porcentaje_mensual = 0.06
+                elif prima_mensual >= 50000:
+                    porcentaje_mensual = 0.05
+
+        monto_mensual = prima_mensual * porcentaje_mensual
+        total_bono += monto_mensual
+        comentario_mensual = f"{'✅' if porcentaje_mensual else '❌'} Bono mensual por medio {portal} con prima de {format_currency(prima_mensual)}."
+        resultados.append(("📅 Bono Mensual Daños", porcentaje_mensual, monto_mensual, comentario_mensual))
+
+        porcentaje_rec = 0
+        if portal == "Portal":
+            if prima_anual >= 960000:
+                porcentaje_rec = 0.07
+            elif prima_anual >= 480000:
+                porcentaje_rec = 0.06
+            elif prima_anual >= 180000:
+                porcentaje_rec = 0.05
+        else:
+            if siniestralidad <= 40:
+                if prima_anual >= 2400000:
+                    porcentaje_rec = 0.07
+                elif prima_anual >= 1200000:
+                    porcentaje_rec = 0.06
+                elif prima_anual >= 600000:
+                    porcentaje_rec = 0.05
+
+        monto_rec = prima_anual * porcentaje_rec
+        total_bono += monto_rec
+        comentario_rec = f"{'✅' if porcentaje_rec else '❌'} Bono recuperación anual por medio {portal} con prima de {format_currency(prima_anual)}."
+        resultados.append(("📆 Bono Recuperación Anual Daños", porcentaje_rec, monto_rec, comentario_rec))
+
+        porcentaje_rent = 0
+        if siniestralidad <= 30:
+            porcentaje_rent = 0.035
+        elif siniestralidad <= 40:
+            porcentaje_rent = 0.025
+        elif siniestralidad <= 50:
+            porcentaje_rent = 0.015
+
+        monto_rent = prima_anual * porcentaje_rent
+        total_bono += monto_rent
+        comentario_rent = f"{'✅' if porcentaje_rent else '❌'} Bono rentabilidad con siniestralidad del {siniestralidad:.2f}%."
+        resultados.append(("🏠 Bono Rentabilidad Daños", porcentaje_rent, monto_rent, comentario_rent))
+
+
+   # --- VIDA ---
+    if ramo == "Vida":
+        primas = st.number_input("Prima Pagada Acumulada Nuevo Negocio Vida (m.n.)", min_value=0.0)
+        siniestralidad = st.number_input("Siniestralidad Vida (%)", min_value=0.0, max_value=100.0)
+
+        datos_ingresados += [
+            f"Prima Vida: {format_currency(primas)}",
+            f"Siniestralidad Vida: {siniestralidad:.2f}%"
         ]
 
         porcentaje = 0
-        if canal == "Portal":
-            if mensual >= 80000:
-                porcentaje = 0.07
-            elif mensual >= 40000:
-                porcentaje = 0.06
-            elif mensual >= 15000:
-                porcentaje = 0.05
-        else:
-            if mensual >= 200000:
-                porcentaje = 0.07
-            elif mensual >= 100000:
-                porcentaje = 0.06
-            elif mensual >= 50000:
-                porcentaje = 0.05
-        monto = mensual * porcentaje
-        total_bono += monto
-        resultados.append(("🏢 Bono Mensual Daños", porcentaje, monto, f"Canal: {canal} con prima mensual de {format_currency(mensual)}"))
-
-        porcentaje = 0
-        if canal == "Portal":
-            if anual >= 960000:
-                porcentaje = 0.07
-            elif anual >= 480000:
-                porcentaje = 0.06
-            elif anual >= 180000:
-                porcentaje = 0.05
-        else:
-            if anual >= 2400000:
-                porcentaje = 0.07
-            elif anual >= 1200000:
-                porcentaje = 0.06
-            elif anual >= 600000:
-                porcentaje = 0.05
-        monto = anual * porcentaje
-        total_bono += monto
-        resultados.append(("📅 Bono Recuperación Anual Daños", porcentaje, monto, f"Canal: {canal} con prima anual de {format_currency(anual)}"))
-
-        porcentaje = 0
-        if siniestralidad <= 30:
-            porcentaje = 0.035
-        elif siniestralidad <= 40:
-            porcentaje = 0.025
-        elif siniestralidad <= 50:
-            porcentaje = 0.015
-        monto = anual * porcentaje
-        total_bono += monto
-        resultados.append(("📈 Bono Rentabilidad Daños", porcentaje, monto, f"Rentabilidad del {siniestralidad:.2f}%"))
-
-# --- VIDA ---
-if ramo == "Vida":
-    primas = st.number_input("Prima Pagada Acumulada Nuevo Negocio Vida (m.n.)", min_value=0.0)
-    siniestralidad = st.number_input("Siniestralidad Vida (%)", min_value=0.0, max_value=100.0)
-
-    datos_ingresados += [
-        f"Prima Vida: {format_currency(primas)}",
-        f"Siniestralidad Vida: {siniestralidad:.2f}%"
-    ]
-
-    porcentaje = 0
-    if primas >= 6000000 and siniestralidad <= 60:
-        porcentaje = 0.06
-    elif primas >= 2500000 and siniestralidad <= 60:
-        porcentaje = 0.05
-    elif primas >= 500000 and siniestralidad <= 60:
-        porcentaje = 0.04
-    elif primas >= 50000:
-        porcentaje = 0.03
-
+        if primas >= 6000000 and siniestralidad <= 60:
+            porcentaje = 0.06
+        elif primas >= 2500000 and siniestralidad <= 60:
+            porcentaje = 0.05
+        elif primas >= 500000 and siniestralidad <= 60:
+            porcentaje = 0.04
+        elif primas >= 50000:
+            porcentaje = 0.03
 
         monto = primas * porcentaje
         total_bono += monto
-        resultados.append(("❤️ Bono Vida CIZ", porcentaje, monto, f"Prima: {format_currency(primas)}, Siniestralidad: {siniestralidad:.2f}%"))
+        comentario = f"{'✅' if porcentaje else '❌'} Prima: {format_currency(primas)}, Siniestralidad: {siniestralidad:.2f}%"
+        resultados.append(("❤️ Bono Vida CIZ", porcentaje, monto, comentario))
 
-   # --- GMM ---
+    # --- GMM ---
     if ramo == "GMM":
         primas = st.number_input("Prima Pagada Acumulada Nuevo Negocio GMM (m.n.)", min_value=0.0)
         siniestralidad = st.number_input("Siniestralidad GMM (%)", min_value=0.0, max_value=100.0)
@@ -214,54 +243,58 @@ if ramo == "Vida":
         ]
 
         porcentaje = 0
-        if primas >= 50000:
-            if siniestralidad <= 65:
-                porcentaje = 0.05
-        elif primas >= 30000:
-            if siniestralidad <= 65:
-                porcentaje = 0.03
-        elif primas >= 10000:
-            if siniestralidad <= 65:
-                porcentaje = 0.01
+        if primas >= 6000000 and siniestralidad <= 65:
+            porcentaje = 0.03
+        elif primas >= 2500000 and siniestralidad <= 65:
+            porcentaje = 0.02
+        elif primas >= 500000 and siniestralidad <= 65:
+            porcentaje = 0.01
 
         monto = primas * porcentaje
         total_bono += monto
-        resultados.append(("🩺 Bono GMM CIZ", porcentaje, monto, f"Prima: {format_currency(primas)}, Siniestralidad: {siniestralidad:.2f}%"))
+        comentario = f"{'✅' if porcentaje else '❌'} Prima: {format_currency(primas)}, Siniestralidad: {siniestralidad:.2f}%"
+        resultados.append(("🩺 Bono GMM CIZ", porcentaje, monto, comentario))
 
-# --- CONSERVACIÓN ---
+    # --- CONSERVACIÓN ---
     if ramo == "Conservación":
-        vida_conservacion = st.number_input("% Conservación Vida", min_value=0.0, max_value=100.0)
-        gmm_conservacion = st.number_input("% Conservación GMM", min_value=0.0, max_value=100.0)
-        sin_v = st.number_input("Siniestralidad Vida (%)", min_value=0.0, max_value=100.0)
-        sin_gmm = st.number_input("Siniestralidad GMM (%)", min_value=0.0, max_value=100.0)
+        cartera_vida = st.number_input("Cartera Vida (monto asegurado)", min_value=0.0)
+        cartera_gmm = st.number_input("Cartera GMM (monto asegurado)", min_value=0.0)
+        conservacion_vida = st.number_input("% Conservación Vida", min_value=0.0, max_value=100.0)
+        conservacion_gmm = st.number_input("% Conservación GMM", min_value=0.0, max_value=100.0)
+        siniestralidad_vida = st.number_input("Siniestralidad Vida Conservación (%)", min_value=0.0, max_value=100.0)
+        siniestralidad_gmm = st.number_input("Siniestralidad GMM Conservación (%)", min_value=0.0, max_value=100.0)
 
-        datos_ingresados.append(f"Conservación Vida: {vida_conservacion:.2f}%")
-        datos_ingresados.append(f"Conservación GMM: {gmm_conservacion:.2f}%")
-        datos_ingresados.append(f"Siniestralidad Vida: {sin_v:.2f}%")
-        datos_ingresados.append(f"Siniestralidad GMM: {sin_gmm:.2f}%")
+        datos_ingresados += [
+            f"Cartera Vida: {format_currency(cartera_vida)}",
+            f"Cartera GMM: {format_currency(cartera_gmm)}",
+            f"Conservación Vida: {conservacion_vida:.2f}%",
+            f"Conservación GMM: {conservacion_gmm:.2f}%",
+            f"Siniestralidad Vida Conservación: {siniestralidad_vida:.2f}%",
+            f"Siniestralidad GMM Conservación: {siniestralidad_gmm:.2f}%"
+        ]
 
         porcentaje_vida = 0
-        if sin_v <= 65:
-            if vida_conservacion >= 90:
+        if siniestralidad_vida <= 65:
+            if conservacion_vida >= 90:
                 porcentaje_vida = 0.025
-            elif vida_conservacion >= 80:
+            elif conservacion_vida >= 80:
                 porcentaje_vida = 0.015
 
-        monto_vida = 100000 * porcentaje_vida
+        monto_vida = cartera_vida * porcentaje_vida
         total_bono += monto_vida
-        comentario_vida = f"{'✅' if porcentaje_vida else '❌'} Conservación Vida de {vida_conservacion:.2f}% → bono del {porcentaje_vida*100:.2f}%."
+        comentario_vida = f"{'✅' if porcentaje_vida else '❌'} Conservación Vida de {conservacion_vida:.2f}% con siniestralidad {siniestralidad_vida:.2f}%"
         resultados.append(("📘 Bono Conservación Vida", porcentaje_vida, monto_vida, comentario_vida))
 
         porcentaje_gmm = 0
-        if sin_gmm <= 65:
-            if gmm_conservacion >= 90:
+        if siniestralidad_gmm <= 65:
+            if conservacion_gmm >= 90:
                 porcentaje_gmm = 0.025
-            elif gmm_conservacion >= 80:
+            elif conservacion_gmm >= 80:
                 porcentaje_gmm = 0.015
 
-        monto_gmm = 100000 * porcentaje_gmm
+        monto_gmm = cartera_gmm * porcentaje_gmm
         total_bono += monto_gmm
-        comentario_gmm = f"{'✅' if porcentaje_gmm else '❌'} Conservación GMM de {gmm_conservacion:.2f}% → bono del {porcentaje_gmm*100:.2f}%."
+        comentario_gmm = f"{'✅' if porcentaje_gmm else '❌'} Conservación GMM de {conservacion_gmm:.2f}% con siniestralidad {siniestralidad_gmm:.2f}%"
         resultados.append(("📗 Bono Conservación GMM", porcentaje_gmm, monto_gmm, comentario_gmm))
 
    # --- Mostrar Resultados Finales ---
