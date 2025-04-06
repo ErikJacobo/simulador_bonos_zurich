@@ -264,7 +264,7 @@ if nombre_agente:
         comentario_gmm = f"{'✅' if porcentaje_gmm else '❌'} Conservación GMM de {gmm_conservacion:.2f}% → bono del {porcentaje_gmm*100:.2f}%."
         resultados.append(("📗 Bono Conservación GMM", porcentaje_gmm, monto_gmm, comentario_gmm))
 
-    if resultados and st.button("Calcular Bonos", key="calcular_bonos_zurich"):
+  if resultados and st.button("Calcular Bonos", key="calcular_bonos_zurich"):
         st.markdown(f"### 🧾 Resultado para {nombre_agente}")
 
         if datos_ingresados:
@@ -275,17 +275,12 @@ if nombre_agente:
         if resultados:
             st.markdown("#### 💵 Resultados de Bono:")
             for nombre_bono, porcentaje, monto, comentario in resultados:
-                st.markdown(f'''
-                    <div style='margin-bottom: 10px;'>
-                        <strong>{nombre_bono}:</strong><br>
-                        Porcentaje aplicado: <code>{porcentaje*100:.2f}%</code><br>
-                        Monto ganado: <code>{format_currency(monto)}</code><br>
-                        Explicación: {comentario}
-                    </div>
-                ''', unsafe_allow_html=True)
+                st.markdown(f"- **{nombre_bono}:** {format_currency(monto)}")
+                st.markdown(f"  - Porcentaje aplicado: **{porcentaje*100:.2f}%**")
+                st.markdown(f"  - Explicación: {comentario}")
 
             st.markdown("#### 🧮 Total del Bono:")
-            st.markdown(f"<code>{format_currency(total_bono)}</code>", unsafe_allow_html=True)
+            st.markdown(f"**{format_currency(total_bono)}**")
         else:
             st.warning("No se generó ningún bono con los datos ingresados.")
 
@@ -293,3 +288,4 @@ if nombre_agente:
             "<p style='text-align: center; color: gray;'>Aplican restricciones y condiciones conforme al cuaderno oficial de Zurich Seguros 2025.</p>",
             unsafe_allow_html=True
         )
+
