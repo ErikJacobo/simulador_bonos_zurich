@@ -178,26 +178,26 @@ if nombre_agente:
         total_bono += monto
         resultados.append(("📈 Bono Rentabilidad Daños", porcentaje, monto, f"Rentabilidad del {siniestralidad:.2f}%"))
 
- # --- VIDA ---
-    if ramo == "Vida":
-        primas = st.number_input("Prima Pagada Acumulada Nuevo Negocio Vida (m.n.)", min_value=0.0)
-        siniestralidad = st.number_input("Siniestralidad Vida (%)", min_value=0.0, max_value=100.0)
+# --- VIDA ---
+if ramo == "Vida":
+    primas = st.number_input("Prima Pagada Acumulada Nuevo Negocio Vida (m.n.)", min_value=0.0)
+    siniestralidad = st.number_input("Siniestralidad Vida (%)", min_value=0.0, max_value=100.0)
 
-        datos_ingresados += [
-            f"Prima Vida: {format_currency(primas)}",
-            f"Siniestralidad Vida: {siniestralidad:.2f}%"
-        ]
+    datos_ingresados += [
+        f"Prima Vida: {format_currency(primas)}",
+        f"Siniestralidad Vida: {siniestralidad:.2f}%"
+    ]
 
-        porcentaje = 0
-        if primas >= 50000:
-            if siniestralidad <= 60:
-                porcentaje = 0.06
-        elif primas >= 30000:
-            if siniestralidad <= 60:
-                porcentaje = 0.04
-        elif primas >= 10000:
-            if siniestralidad <= 60:
-                porcentaje = 0.02
+    porcentaje = 0
+    if primas >= 6000000 and siniestralidad <= 60:
+        porcentaje = 0.06
+    elif primas >= 2500000 and siniestralidad <= 60:
+        porcentaje = 0.05
+    elif primas >= 500000 and siniestralidad <= 60:
+        porcentaje = 0.04
+    elif primas >= 50000:
+        porcentaje = 0.03
+
 
         monto = primas * porcentaje
         total_bono += monto
