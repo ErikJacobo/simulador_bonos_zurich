@@ -134,8 +134,7 @@ if nombre_agente:
         comentario_rent = f"{'✅' if porcentaje_rent else '❌'} Rentabilidad del {siniestralidad:.2f}%."
         resultados.append(("📊 Bono Rentabilidad Flotillas", porcentaje_rent, monto_rent, comentario_rent))
 
-
-  # --- DAÑOS ---
+# --- DAÑOS ---
     if ramo == "Daños":
         portal = st.radio("¿Por qué medio se realizó la emisión?", ["Portal", "Mesa de trámites"])
         prima_mensual = st.number_input("Prima mensual pagada (Daños)", min_value=0.0)
@@ -205,7 +204,6 @@ if nombre_agente:
         total_bono += monto_rent
         comentario_rent = f"{'✅' if porcentaje_rent else '❌'} Bono rentabilidad con siniestralidad del {siniestralidad:.2f}%."
         resultados.append(("🏠 Bono Rentabilidad Daños", porcentaje_rent, monto_rent, comentario_rent))
-
 
    # --- VIDA ---
     if ramo == "Vida":
@@ -297,7 +295,7 @@ if nombre_agente:
         comentario_gmm = f"{'✅' if porcentaje_gmm else '❌'} Conservación GMM de {conservacion_gmm:.2f}% con siniestralidad {siniestralidad_gmm:.2f}%"
         resultados.append(("📗 Bono Conservación GMM", porcentaje_gmm, monto_gmm, comentario_gmm))
 
-   # --- Mostrar Resultados Finales ---
+  # --- Mostrar Resultados Finales ---
     if resultados:
         if st.button("Calcular Bonos", key="calcular_bonos_zurich"):
             st.markdown(f"### 🧾 Resultado para {nombre_agente}:")
