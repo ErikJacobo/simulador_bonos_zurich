@@ -134,7 +134,7 @@ if nombre_agente:
         comentario_rent = f"{'✅' if porcentaje_rent else '❌'} Rentabilidad del {siniestralidad:.2f}%."
         resultados.append(("📊 Bono Rentabilidad Flotillas", porcentaje_rent, monto_rent, comentario_rent))
 
- # --- DAÑOS ---
+  # --- DAÑOS ---
     if ramo == "Daños":
         portal = st.radio("¿Por qué medio se realizó la emisión?", ["Portal", "Mesa de trámites"])
         transportes = st.checkbox("¿Incluye línea de Transportes?")
@@ -151,7 +151,6 @@ if nombre_agente:
         ]
 
         porcentaje_mensual = 0
-        comentario_mensual = ""
 
         if portal == "Portal":
             if prima_mensual >= 80000:
@@ -168,17 +167,20 @@ if nombre_agente:
                     porcentaje_mensual = 0.03 if transportes else 0.06
                 elif prima_mensual >= 50000:
                     porcentaje_mensual = 0.02 if transportes else 0.05
-            else:
-                comentario_mensual = "❌ No aplica bono mensual por siniestralidad > 40% en Mesa de trámites."
 
         monto_mensual = prima_mensual * porcentaje_mensual
         total_bono += monto_mensual
-        if not comentario_mensual:
-            comentario_mensual = f"{'✅' if porcentaje_mensual else '❌'} Bono mensual por medio {portal} con prima de {format_currency(prima_mensual)}."
+
+        if porcentaje_mensual > 0:
+            comentario_mensual = f"✅ Bono mensual por medio {portal} con prima de {format_currency(prima_mensual)}."
+        elif portal == "Mesa de trámites" and siniestralidad > 40:
+            comentario_mensual = "❌ No aplica bono mensual por siniestralidad mayor al 40% en Mesa de trámites."
+        else:
+            comentario_mensual = "❌ No aplica bono mensual por monto insuficiente."
+
         resultados.append(("📅 Bono Mensual Daños", porcentaje_mensual, monto_mensual, comentario_mensual))
 
         porcentaje_rec = 0
-        comentario_rec = ""
 
         if portal == "Portal":
             if prima_anual >= 960000:
@@ -195,13 +197,17 @@ if nombre_agente:
                     porcentaje_rec = 0.03 if transportes else 0.06
                 elif prima_anual >= 600000:
                     porcentaje_rec = 0.02 if transportes else 0.05
-            else:
-                comentario_rec = "❌ No aplica bono recuperación anual por siniestralidad > 40% en Mesa de trámites."
 
         monto_rec = prima_anual * porcentaje_rec
         total_bono += monto_rec
-        if not comentario_rec:
-            comentario_rec = f"{'✅' if porcentaje_rec else '❌'} Bono recuperación anual por medio {portal} con prima de {format_currency(prima_anual)}."
+
+        if porcentaje_rec > 0:
+            comentario_rec = f"✅ Bono recuperación anual por medio {portal} con prima de {format_currency(prima_anual)}."
+        elif portal == "Mesa de trámites" and siniestralidad > 40:
+            comentario_rec = "❌ No aplica bono recuperación anual por siniestralidad mayor al 40% en Mesa de trámites."
+        else:
+            comentario_rec = "❌ No aplica bono recuperación anual por monto insuficiente."
+
         resultados.append(("📆 Bono Recuperación Anual Daños", porcentaje_rec, monto_rec, comentario_rec))
 
         porcentaje_rent = 0
